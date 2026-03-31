@@ -3,17 +3,17 @@ import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Company } from './company/entities/company.entity.js';
-import { Store } from './store/entities/store.entity.js';
-import { User } from './user/entities/user.entity.js';
-import { Customer } from './user/entities/customer.entity.js';
-import { SellerProfile } from './user/entities/seller-profile.entity.js';
-import { Wallet } from './wallet/entities/wallet.entity.js';
-import { Transaction } from './transaction/entities/transaction.entity.js';
-import { LedgerEntry } from './transaction/entities/ledger-entry.entity.js';
-import { BonusLot } from './bonus-lot/entities/bonus-lot.entity.js';
-import { Notification } from './notification/entities/notification.entity.js';
-import { AuditLog } from './audit/entities/audit-log.entity.js';
+import { Company } from './company/entities/company.entity';
+import { Store } from './store/entities/store.entity';
+import { User } from './user/entities/user.entity';
+import { Customer } from './user/entities/customer.entity';
+import { SellerProfile } from './user/entities/seller-profile.entity';
+import { Wallet } from './wallet/entities/wallet.entity';
+import { Transaction } from './transaction/entities/transaction.entity';
+import { LedgerEntry } from './transaction/entities/ledger-entry.entity';
+import { BonusLot } from './bonus-lot/entities/bonus-lot.entity';
+import { Notification } from './notification/entities/notification.entity';
+import { AuditLog } from './audit/entities/audit-log.entity';
 
 import {
   UserRole,
@@ -22,7 +22,7 @@ import {
   TransactionStatus,
   LedgerEntryType,
   EntityStatus,
-} from './common/enums/index.js';
+} from './common/enums';
 
 // ─── helpers ──────────────────────────────────────────────────
 function daysFromNow(days: number): Date {
