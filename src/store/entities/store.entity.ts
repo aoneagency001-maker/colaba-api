@@ -24,10 +24,10 @@ export class Store {
   @Column()
   address: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   phone: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   working_hours: string | null;
 
   @Column({ type: 'enum', enum: EntityStatus, default: EntityStatus.ACTIVE })

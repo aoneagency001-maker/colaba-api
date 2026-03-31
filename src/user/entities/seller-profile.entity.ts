@@ -21,7 +21,7 @@ export class SellerProfile {
   @Column({ type: 'uuid' })
   store_id: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   employee_code: string | null;
 
   @Column({ type: 'enum', enum: EntityStatus, default: EntityStatus.ACTIVE })
