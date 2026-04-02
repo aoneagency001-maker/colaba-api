@@ -1,4 +1,4 @@
-import { BonusType } from '../entities/product.entity.js';
+import { BonusType } from '../entities/product.entity';
 
 export class CreateProductDto {
   name: string;

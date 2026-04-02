@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order, OrderStatus, OrderItem } from './entities/order.entity.js';
-import { Product } from '../catalog/entities/product.entity.js';
-import { CatalogService } from '../catalog/catalog.service.js';
-import { CreateOrderDto } from './dto/create-order.dto.js';
+import { Order, OrderStatus, OrderItem } from './entities/order.entity';
+import { Product } from '../catalog/entities/product.entity';
+import { CatalogService } from '../catalog/catalog.service';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Injectable()
 export class OrderService {

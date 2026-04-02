@@ -9,14 +9,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { NewsService } from './news.service.js';
-import { CreateNewsDto } from './dto/create-news.dto.js';
-import { UpdateNewsDto } from './dto/update-news.dto.js';
-import { NewsCategory } from './entities/news-article.entity.js';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
-import { RolesGuard } from '../auth/guards/roles.guard.js';
-import { Roles } from '../common/decorators/roles.decorator.js';
-import { UserRole } from '../common/enums/index.js';
+import { NewsService } from './news.service';
+import { CreateNewsDto } from './dto/create-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
+import { NewsCategory } from './entities/news-article.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '../common/enums/index';
 
 @Controller('news')
 export class NewsController {

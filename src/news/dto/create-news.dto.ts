@@ -1,4 +1,4 @@
-import { NewsCategory } from '../entities/news-article.entity.js';
+import { NewsCategory } from '../entities/news-article.entity';
 
 export class CreateNewsDto {
   title: string;

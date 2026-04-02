@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NewsArticle, NewsCategory } from './entities/news-article.entity.js';
-import { CreateNewsDto } from './dto/create-news.dto.js';
-import { UpdateNewsDto } from './dto/update-news.dto.js';
+import { NewsArticle, NewsCategory } from './entities/news-article.entity';
+import { CreateNewsDto } from './dto/create-news.dto';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 @Injectable()
 export class NewsService {

@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Category } from './category.entity.js';
+import { Category } from './category.entity';
 
 export enum BonusType {
   PERCENT = 'percent',
