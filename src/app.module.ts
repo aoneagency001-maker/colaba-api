@@ -13,6 +13,9 @@ import { HoldModule } from './hold/hold.module';
 import { BonusLotModule } from './bonus-lot/bonus-lot.module';
 import { NotificationModule } from './notification/notification.module';
 import { AuditModule } from './audit/audit.module';
+import { CatalogModule } from './catalog/catalog.module';
+import { OrderModule } from './order/order.module';
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -50,6 +53,9 @@ import { AuditModule } from './audit/audit.module';
     BonusLotModule,
     NotificationModule,
     AuditModule,
+    CatalogModule,
+    OrderModule,
+    NewsModule,
   ],
 })
 export class AppModule {}
