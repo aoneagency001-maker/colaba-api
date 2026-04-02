@@ -65,14 +65,14 @@ export class OrderService {
     userId: string,
     page = 1,
     limit = 20,
-  ): Promise<{ data: Order[]; total: number }> {
-    const [data, total] = await this.orderRepo.findAndCount({
+  ) {
+    const [items, total] = await this.orderRepo.findAndCount({
       where: { userId },
       order: { created_at: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
     });
-    return { data, total };
+    return { items, total, page, totalPages: Math.ceil(total / limit) };
   }
 
   async findById(id: string): Promise<Order> {

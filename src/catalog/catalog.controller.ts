@@ -19,42 +19,42 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums/index';
 
-@Controller('catalog')
-export class CatalogController {
+// Роуты совпадают с тем что ожидает мобильное приложение (StalFed формат)
+@Controller('categories')
+export class CategoriesController {
   constructor(private readonly catalogService: CatalogService) {}
 
-  // ─── Categories (public) ──────────────────────────────────
-
-  @Get('categories')
-  findAllCategories() {
+  @Get()
+  findAll() {
     return this.catalogService.findAllCategories();
   }
 
-  @Get('categories/:id')
-  findCategoryById(@Param('id') id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.catalogService.findCategoryById(id);
   }
 
-  // ─── Categories (admin) ───────────────────────────────────
-
-  @Post('categories')
+  @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.COMPANY_ADMIN)
-  createCategory(@Body() dto: CreateCategoryDto) {
+  create(@Body() dto: CreateCategoryDto) {
     return this.catalogService.createCategory(dto);
   }
 
-  @Put('categories/:id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.COMPANY_ADMIN)
-  updateCategory(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
     return this.catalogService.updateCategory(id, dto);
   }
+}
 
-  // ─── Products (public) ────────────────────────────────────
+@Controller('products')
+export class ProductsController {
+  constructor(private readonly catalogService: CatalogService) {}
 
-  @Get('products')
-  findAllProducts(
+  @Get()
+  findAll(
     @Query('page') page?: string,
     @Query('limit') limit?: string,
     @Query('search') search?: string,
@@ -68,31 +68,29 @@ export class CatalogController {
     });
   }
 
-  @Get('products/:id')
-  findProductById(@Param('id') id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.catalogService.findProductById(id);
   }
 
-  // ─── Products (admin) ─────────────────────────────────────
-
-  @Post('products')
+  @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.COMPANY_ADMIN)
-  createProduct(@Body() dto: CreateProductDto) {
+  create(@Body() dto: CreateProductDto) {
     return this.catalogService.createProduct(dto);
   }
 
-  @Put('products/:id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.COMPANY_ADMIN)
-  updateProduct(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     return this.catalogService.updateProduct(id, dto);
   }
 
-  @Delete('products/:id')
+  @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.COMPANY_ADMIN)
-  removeProduct(@Param('id') id: string) {
+  remove(@Param('id') id: string) {
     return this.catalogService.removeProduct(id);
   }
 }

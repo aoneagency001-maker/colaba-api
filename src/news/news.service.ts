@@ -15,17 +15,17 @@ export class NewsService {
     page = 1,
     limit = 20,
     category?: NewsCategory,
-  ): Promise<{ data: NewsArticle[]; total: number }> {
+  ) {
     const where: any = { isPublished: true };
     if (category) where.category = category;
 
-    const [data, total] = await this.newsRepo.findAndCount({
+    const [items, total] = await this.newsRepo.findAndCount({
       where,
       order: { publishedAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
     });
-    return { data, total };
+    return { items, total, page, totalPages: Math.ceil(total / limit) };
   }
 
   async findById(id: string): Promise<NewsArticle> {

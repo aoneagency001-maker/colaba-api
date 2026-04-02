@@ -51,7 +51,7 @@ export class CatalogService {
     limit?: number;
     search?: string;
     categoryId?: string;
-  }): Promise<{ data: Product[]; total: number; page: number; limit: number }> {
+  }) {
     const page = options.page || 1;
     const limit = options.limit || 20;
 
@@ -59,7 +59,7 @@ export class CatalogService {
     if (options.categoryId) where.categoryId = options.categoryId;
     if (options.search) where.name = ILike(`%${options.search}%`);
 
-    const [data, total] = await this.prodRepo.findAndCount({
+    const [items, total] = await this.prodRepo.findAndCount({
       where,
       relations: ['category'],
       order: { name: 'ASC' },
@@ -67,7 +67,7 @@ export class CatalogService {
       take: limit,
     });
 
-    return { data, total, page, limit };
+    return { items, total, page, totalPages: Math.ceil(total / limit) };
   }
 
   async findProductById(id: string): Promise<Product> {
