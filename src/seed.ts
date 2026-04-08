@@ -485,25 +485,144 @@ async function main() {
   }
   console.log('Subcategories created:', subCats.length);
 
-  // ─── 13. Products (loaded from xlsx data) ──────────────────
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const seedProducts: Array<{ name: string; description: string; price: number; unit: string; cat: string; bonus: number; image: string }> =
-    JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'seed-products.json'), 'utf-8'));
+  // ─── 13. Products — hardcoded StalFed catalog with real prices ──
+  const imageForCat: Record<string, string> = {
+    'armatura': 'http://colaba.5.35.107.85.nip.io/images/catalog_armatura.png',
+    'katanka-krug': 'http://colaba.5.35.107.85.nip.io/images/catalog_katanka.png',
+    'list-gk': 'http://colaba.5.35.107.85.nip.io/images/catalog_list_gk.png',
+    'list-hk': 'http://colaba.5.35.107.85.nip.io/images/catalog_list_hk.png',
+    'list-rifl': 'http://colaba.5.35.107.85.nip.io/images/catalog_list_rifl.png',
+    'list-ocink': 'http://colaba.5.35.107.85.nip.io/images/catalog_list_ocink.png',
+    'profnastil': 'http://colaba.5.35.107.85.nip.io/images/catalog_profnastil.png',
+    'truba-prof': 'http://colaba.5.35.107.85.nip.io/images/catalog_truba_prof.png',
+    'truba-vgp': 'http://colaba.5.35.107.85.nip.io/images/catalog_truba_vgp.png',
+    'truba-bsh': 'http://colaba.5.35.107.85.nip.io/images/catalog_truba_bsh.png',
+    'balka': 'http://colaba.5.35.107.85.nip.io/images/catalog_balka.png',
+    'shveller': 'http://colaba.5.35.107.85.nip.io/images/catalog_shveller.png',
+    'ugolok-ravn': 'http://colaba.5.35.107.85.nip.io/images/catalog_ugolok.png',
+    'provoloka': 'http://colaba.5.35.107.85.nip.io/images/catalog_provoloka.png',
+    'setka': 'http://colaba.5.35.107.85.nip.io/images/catalog_setka.png',
+    'elektrody': 'http://colaba.5.35.107.85.nip.io/images/catalog_elektrody.png',
+    'otvod-90': 'http://colaba.5.35.107.85.nip.io/images/catalog_otvod.png',
+    'troynik': 'http://colaba.5.35.107.85.nip.io/images/catalog_troynik.png',
+  };
+
+  const products: { name: string; desc: string; price: number; unit: string; cat: string; bonus: number; comp?: string; mult?: number }[] = [
+    // ─── Арматура (ГОСТ 5781-82) ───
+    { name: 'Арматура А500С d8', desc: 'Арматура горячекатаная класса А-III (А500С), d8мм, ГОСТ 5781-82', price: 135000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: '35ГС' },
+    { name: 'Арматура А500С d10', desc: 'Арматура горячекатаная класса А-III (А500С), d10мм, ГОСТ 5781-82', price: 128000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: '35ГС, А500' },
+    { name: 'Арматура А500С d12', desc: 'Арматура горячекатаная класса А-III (А500С), d12мм, ГОСТ 5781-82. Длина 11.7м', price: 125000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d14', desc: 'Арматура класса А-III (А500С), d14мм, ГОСТ 5781-82', price: 126000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d16', desc: 'Арматура класса А-III (А500С), d16мм, ГОСТ 5781-82', price: 125000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d18', desc: 'Арматура класса А-III (А500С), d18мм, ГОСТ 5781-82', price: 127000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d20', desc: 'Арматура класса А-III (А500С), d20мм, ГОСТ 5781-82', price: 126000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d22', desc: 'Арматура класса А-III (А500С), d22мм, ГОСТ 5781-82', price: 128000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d25', desc: 'Арматура класса А-III (А500С), d25мм, ГОСТ 5781-82', price: 130000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d28', desc: 'Арматура класса А-III (А500С), d28мм, ГОСТ 5781-82', price: 132000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d32', desc: 'Арматура класса А-III (А500С), d32мм, ГОСТ 5781-82', price: 134000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d36', desc: 'Арматура класса А-III (А500С), d36мм, ГОСТ 5781-82', price: 138000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+    { name: 'Арматура А500С d40', desc: 'Арматура класса А-III (А500С), d40мм, ГОСТ 5781-82', price: 142000, unit: 'тонна', cat: 'armatura', bonus: 3, comp: 'А500' },
+
+    // ─── Катанка/Круг ───
+    { name: 'Катанка 6мм', desc: 'Катанка стальная d6мм, ГОСТ 30136-95', price: 120000, unit: 'тонна', cat: 'katanka-krug', bonus: 3, comp: 'Ст1-3кп/пс' },
+    { name: 'Катанка 8мм', desc: 'Катанка стальная d8мм, ГОСТ 30136-95', price: 118000, unit: 'тонна', cat: 'katanka-krug', bonus: 3, comp: 'Ст1-3кп/пс' },
+    { name: 'Круг стальной d12', desc: 'Круг горячекатаный d12мм, ГОСТ 2590-2006', price: 132000, unit: 'тонна', cat: 'katanka-krug', bonus: 3, comp: 'Ст3, Ст20' },
+    { name: 'Круг стальной d20', desc: 'Круг горячекатаный d20мм, ГОСТ 2590-2006', price: 135000, unit: 'тонна', cat: 'katanka-krug', bonus: 3, comp: 'Ст3, Ст20' },
+
+    // ─── Лист горячекатаный (ГОСТ 19903-2015) ───
+    { name: 'Лист г/к 2мм 1250x2500', desc: 'Лист горячекатаный, 2мм, 1250x2500мм, ГОСТ 19903-2015', price: 152000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп' },
+    { name: 'Лист г/к 3мм 1250x2500', desc: 'Лист горячекатаный, 3мм, 1250x2500мм, ГОСТ 19903-2015', price: 148000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп' },
+    { name: 'Лист г/к 4мм 1500x6000', desc: 'Лист горячекатаный, 4мм, 1500x6000мм, ГОСТ 19903-2015', price: 145000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп/09Г2С' },
+    { name: 'Лист г/к 5мм 1500x6000', desc: 'Лист горячекатаный, 5мм, 1500x6000мм, ГОСТ 19903-2015', price: 143000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп/09Г2С' },
+    { name: 'Лист г/к 6мм 1500x6000', desc: 'Лист горячекатаный, 6мм, 1500x6000мм, ГОСТ 19903-2015', price: 142000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп' },
+    { name: 'Лист г/к 8мм 1500x6000', desc: 'Лист горячекатаный, 8мм, 1500x6000мм, ГОСТ 19903-2015', price: 140000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп/09Г2С' },
+    { name: 'Лист г/к 10мм 1500x6000', desc: 'Лист горячекатаный, 10мм, 1500x6000мм, ГОСТ 19903-2015', price: 139000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп' },
+    { name: 'Лист г/к 12мм 1500x6000', desc: 'Лист горячекатаный, 12мм, 1500x6000мм, ГОСТ 19903-2015', price: 138000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: 'Ст3сп/09Г2С' },
+    { name: 'Лист г/к 16мм 1500x6000', desc: 'Лист горячекатаный, 16мм, 1500x6000мм, ГОСТ 19903-2015', price: 140000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: '09Г2С' },
+    { name: 'Лист г/к 20мм 1500x6000', desc: 'Лист горячекатаный, 20мм, 1500x6000мм, ГОСТ 19903-2015', price: 142000, unit: 'тонна', cat: 'list-gk', bonus: 4, comp: '09Г2С' },
+    { name: 'Лист рифлёный 4мм', desc: 'Лист стальной рифлёный (чечевица), 4мм, ГОСТ 8568-77', price: 158000, unit: 'тонна', cat: 'list-rifl', bonus: 4, comp: 'Ст3сп' },
+    { name: 'Лист оцинкованный 0.5мм', desc: 'Лист оцинкованный 0.5мм, 1250x2500, ГОСТ 14918-80', price: 195000, unit: 'тонна', cat: 'list-ocink', bonus: 4 },
+    { name: 'Лист х/к 1мм 1250x2500', desc: 'Лист холоднокатаный 1мм, 1250x2500, ГОСТ 19904-90', price: 178000, unit: 'тонна', cat: 'list-hk', bonus: 4, comp: 'Ст08пс' },
+    { name: 'Профнастил С8 окрашенный', desc: 'Профнастил С8-1150, окрашенный RAL, толщина 0.5мм', price: 2800, unit: 'м.п.', cat: 'profnastil', bonus: 4 },
+    { name: 'Профнастил С21 оцинк.', desc: 'Профнастил С21-1000 оцинкованный, толщина 0.5мм', price: 2400, unit: 'м.п.', cat: 'profnastil', bonus: 4 },
+
+    // ─── Труба профильная (ГОСТ 8639/8645) ───
+    { name: 'Профтруба 20x20x1.5', desc: 'Труба профильная квадратная 20x20x1.5мм, ГОСТ 8639-82', price: 185000, unit: 'тонна', cat: 'truba-prof', bonus: 5, comp: 'Ст3/Ст20' },
+    { name: 'Профтруба 40x20x2', desc: 'Труба профильная прямоугольная 40x20x2мм, ГОСТ 8645-68', price: 172000, unit: 'тонна', cat: 'truba-prof', bonus: 5, comp: 'Ст3/Ст20' },
+    { name: 'Профтруба 40x40x2', desc: 'Труба профильная квадратная 40x40x2мм, ГОСТ 8639-82', price: 170000, unit: 'тонна', cat: 'truba-prof', bonus: 5, comp: 'Ст3/Ст20' },
+    { name: 'Профтруба 60x40x3', desc: 'Труба профильная прямоугольная 60x40x3мм, ГОСТ 8645-68', price: 168000, unit: 'тонна', cat: 'truba-prof', bonus: 5, comp: 'Ст3/09Г2С' },
+    { name: 'Профтруба 80x40x3', desc: 'Труба профильная прямоугольная 80x40x3мм, ГОСТ 8645-68', price: 172000, unit: 'тонна', cat: 'truba-prof', bonus: 5 },
+    { name: 'Профтруба 80x80x4', desc: 'Труба профильная квадратная 80x80x4мм, ГОСТ 8639-82', price: 175000, unit: 'тонна', cat: 'truba-prof', bonus: 5 },
+    { name: 'Профтруба 100x100x4', desc: 'Труба профильная квадратная 100x100x4мм, ГОСТ 8639-82', price: 178000, unit: 'тонна', cat: 'truba-prof', bonus: 5 },
+    { name: 'Профтруба 40x20x2 (АКЦИЯ x2)', desc: 'АКЦИЯ: двойной кэшбэк! Труба профильная 40x20x2мм', price: 172000, unit: 'тонна', cat: 'truba-prof', bonus: 5, mult: 2 },
+
+    // ─── Труба ВГП (ГОСТ 3262-75) ───
+    { name: 'Труба ВГП 15x2.8', desc: 'Труба водогазопроводная 15x2.8мм, ГОСТ 3262-75', price: 195000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+    { name: 'Труба ВГП 20x2.8', desc: 'Труба водогазопроводная 20x2.8мм, ГОСТ 3262-75', price: 190000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+    { name: 'Труба ВГП 25x3.2', desc: 'Труба водогазопроводная 25x3.2мм, ГОСТ 3262-75', price: 185000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+    { name: 'Труба ВГП 32x3.2', desc: 'Труба водогазопроводная 32x3.2мм, ГОСТ 3262-75', price: 183000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+    { name: 'Труба ВГП 40x3.5', desc: 'Труба водогазопроводная 40x3.5мм, ГОСТ 3262-75', price: 182000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+    { name: 'Труба ВГП 50x3.5', desc: 'Труба водогазопроводная 50x3.5мм, ГОСТ 3262-75', price: 180000, unit: 'тонна', cat: 'truba-vgp', bonus: 5 },
+
+    // ─── Труба бесшовная (ГОСТ 8732-78) ───
+    { name: 'Труба бесшовная 57x5', desc: 'Труба стальная бесшовная 57x5мм, ГОСТ 8732-78', price: 215000, unit: 'тонна', cat: 'truba-bsh', bonus: 5, comp: 'Ст20/09Г2С' },
+    { name: 'Труба бесшовная 76x6', desc: 'Труба стальная бесшовная 76x6мм, ГОСТ 8732-78', price: 220000, unit: 'тонна', cat: 'truba-bsh', bonus: 5, comp: 'Ст20' },
+    { name: 'Труба бесшовная 89x6', desc: 'Труба стальная бесшовная 89x6мм, ГОСТ 8732-78', price: 218000, unit: 'тонна', cat: 'truba-bsh', bonus: 5, comp: 'Ст20' },
+    { name: 'Труба бесшовная 108x8', desc: 'Труба стальная бесшовная 108x8мм, ГОСТ 8732-78', price: 225000, unit: 'тонна', cat: 'truba-bsh', bonus: 5, comp: 'Ст20/09Г2С' },
+
+    // ─── Балка двутавровая (ГОСТ 26020-83) ───
+    { name: 'Балка 10Б1', desc: 'Балка двутавровая 10Б1, ГОСТ 26020-83, длина 12м', price: 168000, unit: 'тонна', cat: 'balka', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Балка 20Б1', desc: 'Балка двутавровая 20Б1, ГОСТ 26020-83, длина 12м', price: 162000, unit: 'тонна', cat: 'balka', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Балка 25Б1', desc: 'Балка двутавровая 25Б1, ГОСТ 26020-83, длина 12м', price: 163000, unit: 'тонна', cat: 'balka', bonus: 5, comp: 'Ст3сп/09Г2С' },
+    { name: 'Балка 30Б1', desc: 'Балка двутавровая 30Б1, ГОСТ 26020-83, длина 12м', price: 165000, unit: 'тонна', cat: 'balka', bonus: 5, comp: 'Ст3сп/09Г2С' },
+
+    // ─── Швеллер (ГОСТ 8240-97) ───
+    { name: 'Швеллер 8П', desc: 'Швеллер стальной горячекатаный 8П, ГОСТ 8240-97', price: 165000, unit: 'тонна', cat: 'shveller', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Швеллер 10П', desc: 'Швеллер стальной горячекатаный 10П, ГОСТ 8240-97', price: 162000, unit: 'тонна', cat: 'shveller', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Швеллер 12П', desc: 'Швеллер стальной горячекатаный 12П, ГОСТ 8240-97, длина 12м', price: 158000, unit: 'тонна', cat: 'shveller', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Швеллер 14П', desc: 'Швеллер стальной горячекатаный 14П, ГОСТ 8240-97', price: 157000, unit: 'тонна', cat: 'shveller', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Швеллер 16П', desc: 'Швеллер стальной горячекатаный 16П, ГОСТ 8240-97', price: 156000, unit: 'тонна', cat: 'shveller', bonus: 5, comp: 'Ст3сп' },
+
+    // ─── Уголок (ГОСТ 8509-93) ───
+    { name: 'Уголок 25x25x3', desc: 'Уголок стальной равнополочный 25x25x3мм, ГОСТ 8509-93', price: 158000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Уголок 32x32x3', desc: 'Уголок стальной равнополочный 32x32x3мм, ГОСТ 8509-93', price: 155000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Уголок 40x40x4', desc: 'Уголок стальной равнополочный 40x40x4мм, ГОСТ 8509-93', price: 152000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Уголок 50x50x5', desc: 'Уголок стальной равнополочный 50x50x5мм, ГОСТ 8509-93', price: 150000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Уголок 63x63x6', desc: 'Уголок стальной равнополочный 63x63x6мм, ГОСТ 8509-93', price: 148000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+    { name: 'Уголок 75x75x6', desc: 'Уголок стальной равнополочный 75x75x6мм, ГОСТ 8509-93', price: 147000, unit: 'тонна', cat: 'ugolok-ravn', bonus: 5, comp: 'Ст3сп' },
+
+    // ─── Метизы ───
+    { name: 'Проволока вязальная 1.2мм', desc: 'Проволока стальная вязальная d1.2мм, ГОСТ 3282-74', price: 145000, unit: 'тонна', cat: 'provoloka', bonus: 3 },
+    { name: 'Проволока вязальная 3мм', desc: 'Проволока стальная вязальная d3мм, ГОСТ 3282-74', price: 140000, unit: 'тонна', cat: 'provoloka', bonus: 3 },
+    { name: 'Сетка рабица 50x50 d1.6', desc: 'Сетка стальная плетёная одинарная «Рабица» 50x50мм, d1.6мм, рулон 1.5x10м', price: 5500, unit: 'рулон', cat: 'setka', bonus: 3 },
+    { name: 'Сетка сварная 50x50 d3', desc: 'Сетка стальная сварная 50x50мм, d3мм, карта 1x2м', price: 1200, unit: 'карта', cat: 'setka', bonus: 3 },
+    { name: 'Электроды МР-3 d3', desc: 'Электроды сварочные МР-3, d3мм, ГОСТ 9466-75, пачка 5кг', price: 2500, unit: 'пачка', cat: 'elektrody', bonus: 3 },
+    { name: 'Электроды УОНИ 13/55 d4', desc: 'Электроды сварочные УОНИ 13/55, d4мм, пачка 5кг', price: 3200, unit: 'пачка', cat: 'elektrody', bonus: 3 },
+
+    // ─── Трубопроводная арматура ───
+    { name: 'Отвод 90° 57x3.5', desc: 'Отвод стальной крутоизогнутый 90° 57x3.5мм, ГОСТ 17375-2001', price: 850, unit: 'штука', cat: 'otvod-90', bonus: 5 },
+    { name: 'Отвод 90° 89x5', desc: 'Отвод стальной крутоизогнутый 90° 89x5мм, ГОСТ 17375-2001', price: 1800, unit: 'штука', cat: 'otvod-90', bonus: 5 },
+    { name: 'Отвод 90° 108x6', desc: 'Отвод стальной крутоизогнутый 90° 108x6мм, ГОСТ 17375-2001', price: 2500, unit: 'штука', cat: 'otvod-90', bonus: 5 },
+    { name: 'Тройник 57x3.5', desc: 'Тройник стальной равнопроходной 57x3.5мм, ГОСТ 17376-2001', price: 1200, unit: 'штука', cat: 'troynik', bonus: 5 },
+    { name: 'Тройник 89x5', desc: 'Тройник стальной равнопроходной 89x5мм, ГОСТ 17376-2001', price: 2800, unit: 'штука', cat: 'troynik', bonus: 5 },
+  ];
 
   let prodCount = 0;
-  for (const p of seedProducts) {
+  for (const p of products) {
     const cat = savedSubs[p.cat] || savedCats[p.cat];
     if (!cat) { continue; }
+    const img = imageForCat[p.cat] || 'http://colaba.5.35.107.85.nip.io/images/catalog_default.png';
     await prodRepo2.save(prodRepo2.create({
-      name: p.name.trim(),
-      description: p.price > 0 ? p.description : `${p.description}\n\nЦена по запросу`,
+      name: p.name,
+      description: p.desc,
       price: p.price,
       unit: p.unit,
       categoryId: cat.id,
       bonusType: BonusType.PERCENT,
       bonusValue: p.bonus,
-      bonusMultiplier: 1,
-      images: [p.image],
+      bonusMultiplier: p.mult || 1,
+      composition: p.comp || null,
+      images: [img],
     }));
     prodCount++;
   }
